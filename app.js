@@ -71,6 +71,8 @@ const text = {
     recommendedJobs: "Recommended jobs:",
     recommendedCourses: "Recommended courses:",
     supportResources: "Support resources:",
+    printableTitle: "Printable Action Plan",
+    topLinks: "Most relevant links:",
     reminder:
       "Reminder: this is resource navigation, not professional medical, legal, or investment advice.",
     languages: { en: "English", es: "Spanish", zh: "Chinese" },
@@ -126,6 +128,8 @@ const text = {
     recommendedJobs: "Trabajos recomendados:",
     recommendedCourses: "Cursos recomendados:",
     supportResources: "Recursos de apoyo:",
+    printableTitle: "Plan de acción imprimible",
+    topLinks: "Enlaces más relevantes:",
     reminder:
       "Recordatorio: esto es navegación de recursos, no consejo médico, legal ni de inversión.",
     languages: { en: "Inglés", es: "Español", zh: "Chino" },
@@ -180,6 +184,8 @@ const text = {
     recommendedJobs: "推荐工作：",
     recommendedCourses: "推荐课程：",
     supportResources: "支持资源：",
+    printableTitle: "简洁行动计划",
+    topLinks: "最相关链接：",
     reminder: "提醒：这是资源导航，不替代专业医疗、法律或投资建议。",
     languages: { en: "英语", es: "西班牙语", zh: "中文" },
   },
@@ -886,6 +892,7 @@ const elements = {
   stateList: document.getElementById("stateList"),
   todayTasks: document.getElementById("todayTasks"),
   recommendations: document.getElementById("recommendations"),
+  printSummary: document.getElementById("printSummary"),
   backBtn: document.getElementById("backBtn"),
   skipBtn: document.getElementById("skipBtn"),
   restartBtn: document.getElementById("restartBtn"),
@@ -957,6 +964,7 @@ function chooseOption(option) {
   historyStack.push({ nodeId: currentNodeId, snapshot: cloneState() });
   applyEffects(option.effects);
   currentNodeId = option.effects?.reset ? "goal" : option.next;
+  setActiveTab(recommendedTab());
   render();
 }
 
@@ -966,6 +974,7 @@ function render() {
   renderState();
   renderTodayTasks();
   renderRecommendations();
+  renderPrintSummary();
 }
 
 function renderStaticText() {
@@ -1002,6 +1011,38 @@ function renderStaticText() {
   document.querySelectorAll(".tab").forEach((tab) => {
     tab.textContent = t.tabs[tab.dataset.tab];
   });
+  renderTabState();
+}
+
+function setActiveTab(tabName) {
+  activeTab = tabName;
+  renderTabState();
+}
+
+function renderTabState() {
+  document.querySelectorAll(".tab").forEach((tab) => {
+    const isActive = tab.dataset.tab === activeTab;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+  });
+}
+
+function recommendedTab() {
+  if (state.planBias === "jobs") return "jobs";
+  if (state.planBias === "skills") return "skills";
+  if (state.planBias === "support") return "support";
+  if (state.supportNeeds.includes("resume") || state.supportNeeds.includes("interview")) return "career";
+  if (
+    state.goals.includes("mental") ||
+    state.supportNeeds.includes("mental_support") ||
+    state.supportNeeds.includes("mental_crisis")
+  ) {
+    return "support";
+  }
+  if (state.goals.includes("skill") || state.goals.includes("finance") || state.supportNeeds.includes("finance")) {
+    return "skills";
+  }
+  return "jobs";
 }
 
 function renderNode() {
@@ -1301,6 +1342,44 @@ function planText() {
   ].join("\n");
 }
 
+function renderPrintSummary() {
+  const t = currentText();
+  const tasks = Array.from(elements.todayTasks.querySelectorAll("li")).map((entry) => entry.textContent.trim());
+  const topLinks = [
+    ...pickTop(jobCatalog, 2),
+    ...pickTop(skillCatalog, 1),
+    ...pickTop(supportCatalog, 1),
+  ];
+
+  elements.printSummary.innerHTML = `
+    <div class="print-page">
+      <h1>${t.printableTitle}</h1>
+      <div class="print-meta">
+        <p><strong>${t.nameLabel}:</strong> ${state.name || t.notProvided}</p>
+        <p><strong>${t.locationLabel}:</strong> ${state.location || t.notProvided}</p>
+        <p><strong>${t.goal}:</strong> ${humanList(state.goals, valueLabels.goals)}</p>
+      </div>
+      <h2>${t.today}</h2>
+      <ol>${tasks.map((task) => `<li>${task}</li>`).join("")}</ol>
+      <h2>${t.topLinks}</h2>
+      <ul>
+        ${topLinks
+          .map(
+            (entry) => `
+              <li>
+                <strong>${entryTitle(entry)}</strong><br />
+                ${reasonFor(entry)}<br />
+                <span>${entryLink(entry)}</span>
+              </li>
+            `,
+          )
+          .join("")}
+      </ul>
+      <p class="print-note">${t.reminder}</p>
+    </div>
+  `;
+}
+
 function showToast(message) {
   const toast = document.createElement("div");
   toast.className = "toast";
@@ -1351,6 +1430,7 @@ elements.skipBtn.addEventListener("click", () => {
 elements.restartBtn.addEventListener("click", () => {
   resetState();
   currentNodeId = "goal";
+  setActiveTab("jobs");
   render();
   showToast(currentText().restarted);
 });
@@ -1361,9 +1441,7 @@ document.querySelectorAll(".tab").forEach((tab) => {
       entry.classList.remove("active");
       entry.setAttribute("aria-selected", "false");
     });
-    tab.classList.add("active");
-    tab.setAttribute("aria-selected", "true");
-    activeTab = tab.dataset.tab;
+    setActiveTab(tab.dataset.tab);
     renderRecommendations();
   });
 });

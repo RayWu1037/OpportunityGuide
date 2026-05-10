@@ -15,7 +15,7 @@ An accessible opportunity navigation prototype for low-income, disabled, and low
   - Career guidance: resume help, interview practice, disability accommodation templates, scam checks, and daily job-search tasks.
 - Accessibility controls: large text, high contrast, and read-current-question.
 - Job recommendation links point to role- and location-specific search results when the user provides a city or ZIP code.
-- Action plan generation with copy and print/PDF support.
+- Action plan generation with copy support and a concise print/PDF summary.
 
 ## How to Use
 

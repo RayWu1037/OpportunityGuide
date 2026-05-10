@@ -14,7 +14,12 @@ class FakeClassList {
     this.values.delete(value);
   }
 
-  toggle(value) {
+  toggle(value, force) {
+    if (typeof force === "boolean") {
+      if (force) this.values.add(value);
+      else this.values.delete(value);
+      return force;
+    }
     if (this.values.has(value)) {
       this.values.delete(value);
       return false;
@@ -146,6 +151,7 @@ const ids = [
   "whyText",
   "todayTasks",
   "recommendations",
+  "printSummary",
   "freeInputBox",
   "freeInputLabelText",
   "freeInput",
@@ -251,6 +257,18 @@ async function clickOption(optionId) {
     throw new Error("Preferred language changed the interface text");
   }
 
+  await clickOption("learnSkill");
+  if (activeTab !== "skills") {
+    throw new Error("Learning path should automatically switch to the Skills tab");
+  }
+  await elements.restartBtn.click();
+
+  await clickOption("mentalHelp");
+  if (activeTab !== "support") {
+    throw new Error("Mental health path should automatically switch to the Support tab");
+  }
+  await elements.restartBtn.click();
+
   elements.userName.value = "Alex";
   elements.userLocation.value = "Chicago";
   await elements.profileForm.dispatch("submit");
@@ -261,6 +279,9 @@ async function clickOption(optionId) {
   await clickOption("findJob");
   await clickOption("now");
   await clickOption("remoteWork");
+  if (activeTab !== "jobs") {
+    throw new Error("Job path should keep the Jobs tab active");
+  }
   if (elements.optionGrid.children.some((child) => child.dataset.optionId === "sitRemote")) {
     throw new Error("Repeated sitting/remote option should not appear after remote work was selected");
   }
@@ -292,6 +313,9 @@ async function clickOption(optionId) {
   }
   if (!elements.recommendations.innerHTML.includes("entry%20level%20remote%20customer%20support")) {
     throw new Error("Job recommendations should include precise role search terms");
+  }
+  if (!elements.printSummary.innerHTML.includes("Printable Action Plan") || !elements.printSummary.innerHTML.includes("https://www.indeed.com/jobs")) {
+    throw new Error("Printable summary should be concise and include precise links");
   }
 
   elements.uiLanguageSelect.value = "es";
