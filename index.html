@@ -1,150 +1,148 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>向上路 | 弱势群体机会导航</title>
+    <title>OpportunityGuide | Accessible opportunity navigation</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="app" id="app">
-      <header class="topbar" aria-label="应用顶部栏">
+      <header class="topbar" id="topbar" aria-label="Application header">
         <div>
           <p class="eyebrow">OpportunityGuide Prototype</p>
-          <h1>向上路</h1>
-          <p class="subtitle">用选择式引导，帮低收入、残障和低学历用户找到工作、技能、心理支持和财务学习的下一步。</p>
+          <h1 id="appTitle">OpportunityGuide</h1>
+          <p class="subtitle" id="appSubtitle">
+            A guided, accessible path to jobs, skills, mental health support, and money basics.
+          </p>
         </div>
-        <div class="accessibility-panel" aria-label="无障碍工具">
-          <button class="tool-button" id="largeTextBtn" type="button" aria-pressed="false">大字体</button>
-          <button class="tool-button" id="contrastBtn" type="button" aria-pressed="false">高对比</button>
-          <button class="tool-button" id="simpleBtn" type="button" aria-pressed="true">简单语言</button>
-          <button class="tool-button" id="readBtn" type="button">朗读当前问题</button>
+        <div class="accessibility-panel" id="accessibilityPanel" aria-label="Accessibility tools">
+          <label class="language-switcher" id="uiLanguageLabel" for="uiLanguageSelect">
+            <span id="uiLanguageLabelText">Interface language</span>
+            <select id="uiLanguageSelect">
+              <option value="en">English</option>
+              <option value="es">Español</option>
+              <option value="zh">中文</option>
+            </select>
+          </label>
+          <button class="tool-button" id="largeTextBtn" type="button" aria-pressed="false">Large text</button>
+          <button class="tool-button" id="contrastBtn" type="button" aria-pressed="false">High contrast</button>
+          <button class="tool-button" id="simpleBtn" type="button" aria-pressed="true">Plain language</button>
+          <button class="tool-button" id="readBtn" type="button">Read question</button>
         </div>
       </header>
 
       <main class="layout">
-        <aside class="profile-panel" aria-label="基本情况">
+        <aside class="profile-panel" id="profilePanel" aria-label="Basic profile">
           <div class="panel-heading">
             <p class="eyebrow">Step 1</p>
-            <h2>基本情况</h2>
+            <h2 id="profileTitle">Basic Profile</h2>
           </div>
           <form id="profileForm" class="profile-form">
-            <label>
-              称呼，可跳过
-              <input id="userName" autocomplete="name" placeholder="例如：Alex" />
+            <label id="nameLabel">
+              <span id="nameLabelText">Name, optional</span>
+              <input id="userName" autocomplete="name" placeholder="Example: Alex" />
             </label>
-            <label>
-              城市或邮编
-              <input id="userLocation" autocomplete="postal-code" placeholder="例如：Chicago 或 60616" />
+            <label id="locationLabel">
+              <span id="locationLabelText">City or ZIP code</span>
+              <input id="userLocation" autocomplete="postal-code" placeholder="Example: Chicago or 60616" />
             </label>
-            <label>
-              主要语言
+            <label id="preferredLanguageLabel">
+              <span id="preferredLanguageLabelText">Preferred language</span>
               <select id="userLanguage">
-                <option value="zh">中文</option>
                 <option value="en">English</option>
-                <option value="bilingual">中文 + English</option>
-                <option value="other">其他语言</option>
+                <option value="es">Español</option>
+                <option value="zh">中文</option>
               </select>
             </label>
-            <button class="primary-button" id="saveProfileBtn" type="submit">保存并开始</button>
+            <button class="primary-button" id="saveProfileBtn" type="submit">Save and start</button>
           </form>
 
-          <div class="guide-card" aria-label="导航员说明">
+          <div class="guide-card" id="guideCard" aria-label="Navigator explanation">
             <div class="guide-portrait" aria-hidden="true">
               <div class="portrait-head"></div>
               <div class="portrait-body"></div>
               <div class="portrait-path"></div>
             </div>
             <div>
-              <h3>机会导航员</h3>
-              <p>每次只问一个问题。你可以点选，也可以说“不确定”。系统会把你的情况转成今天能做的任务。</p>
+              <h3 id="guideTitle">Opportunity Navigator</h3>
+              <p id="guideText">
+                One question at a time. You can choose an option or say you are not sure.
+              </p>
             </div>
           </div>
 
-          <section class="state-box" aria-label="当前画像">
-            <h3>当前画像</h3>
-            <dl id="stateList">
-              <div>
-                <dt>目标</dt>
-                <dd>等待选择</dd>
-              </div>
-              <div>
-                <dt>工作适配</dt>
-                <dd>等待选择</dd>
-              </div>
-              <div>
-                <dt>支持需求</dt>
-                <dd>等待选择</dd>
-              </div>
-            </dl>
+          <section class="state-box" id="stateBox" aria-label="Current profile">
+            <h3 id="stateTitle">Current Profile</h3>
+            <dl id="stateList"></dl>
           </section>
         </aside>
 
-        <section class="story-panel" aria-label="选择式引导">
+        <section class="story-panel" id="storyPanel" aria-label="Guided choices">
           <div class="story-header">
             <div>
               <p class="eyebrow" id="storyStep">Step 2</p>
-              <h2 id="questionTitle">先保存基本情况，然后开始</h2>
+              <h2 id="questionTitle">Save your basic profile, then begin</h2>
             </div>
-            <button class="ghost-button" id="restartBtn" type="button">重新开始</button>
+            <button class="ghost-button" id="restartBtn" type="button">Restart</button>
           </div>
 
           <div class="dialogue" aria-live="polite">
-            <p id="questionText">我们会用简单问题一步步帮你判断：先找工作、先学技能、先求助，还是先做简历。</p>
+            <p id="questionText">
+              We will ask simple questions to help decide whether your next step is a job, a skill, support, or resume help.
+            </p>
           </div>
 
-          <div id="optionGrid" class="option-grid" aria-label="可选答案"></div>
+          <div id="optionGrid" class="option-grid" aria-label="Answer options"></div>
 
           <div class="free-input" id="freeInputBox" hidden>
-            <label id="freeInputLabel" for="freeInput">补充信息</label>
+            <label id="freeInputLabel" for="freeInput"><span id="freeInputLabelText">Extra note</span></label>
             <div class="input-row">
-              <input id="freeInput" placeholder="可以简单写几个字" />
-              <button class="secondary-button" id="freeInputBtn" type="button">继续</button>
+              <input id="freeInput" placeholder="A few words is enough" />
+              <button class="secondary-button" id="freeInputBtn" type="button">Continue</button>
             </div>
           </div>
 
           <div class="story-actions">
-            <button class="secondary-button" id="backBtn" type="button" disabled>上一步</button>
-            <button class="secondary-button" id="skipBtn" type="button">我不确定，帮我判断</button>
+            <button class="secondary-button" id="backBtn" type="button" disabled>Back</button>
+            <button class="secondary-button" id="skipBtn" type="button">I am not sure. Help me choose.</button>
           </div>
 
-          <section class="explain-box" aria-label="为什么这样问">
-            <h3>为什么这样问？</h3>
-            <p id="whyText">低学历或压力很大的用户不一定知道该搜索什么。我们先问生活化问题，再把答案转成推荐。</p>
+          <section class="explain-box" id="explainBox" aria-label="Why this question matters">
+            <h3 id="whyTitle">Why ask this?</h3>
+            <p id="whyText">
+              Many users do not know what to search for. We start with life situations, then turn answers into recommendations.
+            </p>
           </section>
         </section>
 
-        <section class="dashboard" aria-label="个性化推荐">
+        <section class="dashboard" id="dashboardPanel" aria-label="Personalized recommendations">
           <div class="panel-heading">
             <p class="eyebrow">Your Path</p>
-            <h2>你的下一步</h2>
+            <h2 id="dashboardTitle">Your Next Step</h2>
           </div>
 
-          <section class="today-plan" aria-label="今天先做">
-            <h3>今天先做这三件事</h3>
-            <ol id="todayTasks">
-              <li>完成左侧基本情况。</li>
-              <li>回答中间的第一个问题。</li>
-              <li>系统会生成适合你的岗位、课程和支持链接。</li>
-            </ol>
+          <section class="today-plan" id="todayPlan" aria-label="Do these today">
+            <h3 id="todayTitle">Do These Three Things Today</h3>
+            <ol id="todayTasks"></ol>
           </section>
 
-          <div class="tabs" role="tablist" aria-label="推荐分类">
-            <button class="tab active" role="tab" aria-selected="true" data-tab="jobs" type="button">工作</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="skills" type="button">技能</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="support" type="button">支持</button>
-            <button class="tab" role="tab" aria-selected="false" data-tab="career" type="button">求职</button>
+          <div class="tabs" id="tabs" role="tablist" aria-label="Recommendation categories">
+            <button class="tab active" role="tab" aria-selected="true" data-tab="jobs" type="button">Jobs</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="skills" type="button">Skills</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="support" type="button">Support</button>
+            <button class="tab" role="tab" aria-selected="false" data-tab="career" type="button">Career</button>
           </div>
 
           <div class="recommendations" id="recommendations" aria-live="polite"></div>
 
           <div class="action-row">
-            <button class="primary-button" id="copyPlanBtn" type="button">复制行动计划</button>
-            <button class="secondary-button" id="printBtn" type="button">打印或保存 PDF</button>
+            <button class="primary-button" id="copyPlanBtn" type="button">Copy action plan</button>
+            <button class="secondary-button" id="printBtn" type="button">Print or save PDF</button>
           </div>
 
-          <p class="notice">
-            这是资源导航原型，不提供医疗、法律或投资建议。若有自伤风险或心理危机，请立即拨打或短信 988，或联系当地紧急服务。
+          <p class="notice" id="noticeText">
+            This is a resource navigation prototype. It does not provide medical, legal, or investment advice.
           </p>
         </section>
       </main>

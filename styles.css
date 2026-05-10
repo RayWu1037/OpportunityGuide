@@ -112,6 +112,20 @@ h3 {
   gap: 8px;
 }
 
+.language-switcher {
+  display: grid;
+  min-width: 170px;
+  gap: 4px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.language-switcher select {
+  min-height: 44px;
+  padding: 8px 10px;
+}
+
 .layout {
   display: grid;
   grid-template-columns: minmax(270px, 0.88fr) minmax(360px, 1.25fr) minmax(340px, 1.08fr);

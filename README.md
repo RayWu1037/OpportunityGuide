@@ -1,36 +1,45 @@
-# 向上路 OpportunityGuide
+# OpportunityGuide
 
-一个面向低收入者、残障人士、低学历用户的机会导航原型。
+An accessible opportunity navigation prototype for low-income, disabled, and low-education users.
 
-## 已实现
+## Features
 
-- 简单注册表单：称呼、城市或邮编、主要语言。
-- Galgame 式选择引导：每次只问一个生活化问题。
-- 用户画像分类：目标、身体/残障适配、阻碍、支持需求。
-- 个性化推荐：
-  - 低门槛工作：远程客服、数据录入、收银、清洁、餐饮、仓储、汽修助手、木工助手、陪护等。
-  - 免费技能课：基础电脑、客服沟通、汽修/木工路径、护理、英语、预算储蓄。
-  - 心理支持：988、FindTreatment、NAMI。
-  - 求职指导：简历、面试、残障 accommodation、反诈骗、每日求职任务。
-- 无障碍功能：大字体、高对比、简单语言、朗读当前问题。
-- 行动计划：自动生成“今天先做这三件事”，支持复制和打印。
+- English-first interface with live language switching for English, Spanish, and Chinese.
+- Simple profile form: name, city or ZIP code, and preferred language.
+- Choice-based guided intake: one plain-language question at a time.
+- User need classification: jobs, skills, mental health support, money basics, body/access needs, and career support.
+- Personalized recommendations:
+  - Quick-start jobs: remote support, data entry, cashier, cleaning, food service, warehouse, auto shop helper, carpentry helper, caregiver roles.
+  - Free skill paths: basic computer use, customer service, auto repair, carpentry safety, caregiving, English, budgeting, credit, and scam prevention.
+  - Support resources: 988, FindTreatment.gov, NAMI, Ticket to Work, job centers, and Goodwill.
+  - Career guidance: resume help, interview practice, disability accommodation templates, scam checks, and daily job-search tasks.
+- Accessibility controls: large text, high contrast, plain-language mode, and read-current-question.
+- Action plan generation with copy and print/PDF support.
 
-## 使用方式
+## How to Use
 
-直接打开 `index.html` 即可运行。
+Open `index.html` directly in a browser.
 
-如需用本地服务器预览，也可以在当前目录运行：
+You can also preview with a local server:
 
 ```powershell
 py -m http.server 8787 --bind 127.0.0.1
 ```
 
-然后访问：
+Then visit:
 
 ```text
 http://127.0.0.1:8787/index.html
 ```
 
-## 注意
+## Test
 
-这是资源导航原型，不提供医疗、法律或投资建议。若用户有自伤风险或心理危机，应优先联系 988 或当地紧急服务。
+```powershell
+node --check app.js
+node --check test-app.js
+node test-app.js
+```
+
+## Note
+
+This is a resource navigation prototype. It does not provide medical, legal, or investment advice. If a user may hurt themselves or is in crisis, they should contact 988 or local emergency services first.

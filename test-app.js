@@ -42,6 +42,7 @@ class FakeElement {
     this.value = "";
     this.disabled = false;
     this.hidden = false;
+    this.placeholder = "";
     this._innerHTML = "";
   }
 
@@ -81,9 +82,17 @@ class FakeElement {
     await Promise.all(handlers.map((handler) => handler({ preventDefault() {} })));
   }
 
-  async dispatch(type) {
+  async dispatch(type, event = {}) {
     const handlers = this.listeners[type] || [];
-    await Promise.all(handlers.map((handler) => handler({ preventDefault() {} })));
+    await Promise.all(
+      handlers.map((handler) =>
+        handler({
+          preventDefault() {},
+          target: this,
+          ...event,
+        }),
+      ),
+    );
   }
 
   querySelectorAll(selector) {
@@ -100,35 +109,53 @@ class FakeElement {
 }
 
 const ids = [
+  "accessibilityPanel",
+  "appTitle",
+  "appSubtitle",
+  "uiLanguageLabelText",
+  "uiLanguageSelect",
   "profileForm",
   "userName",
   "userLocation",
   "userLanguage",
+  "largeTextBtn",
+  "contrastBtn",
+  "simpleBtn",
+  "readBtn",
+  "profileTitle",
+  "nameLabelText",
+  "locationLabelText",
+  "preferredLanguageLabelText",
+  "saveProfileBtn",
+  "guideTitle",
+  "guideText",
+  "stateTitle",
+  "stateList",
+  "restartBtn",
+  "backBtn",
+  "skipBtn",
+  "whyTitle",
+  "dashboardTitle",
+  "todayTitle",
+  "copyPlanBtn",
+  "printBtn",
+  "noticeText",
   "questionTitle",
   "questionText",
   "storyStep",
   "optionGrid",
   "whyText",
-  "stateList",
   "todayTasks",
   "recommendations",
-  "backBtn",
-  "skipBtn",
-  "restartBtn",
-  "copyPlanBtn",
-  "printBtn",
-  "largeTextBtn",
-  "contrastBtn",
-  "simpleBtn",
-  "readBtn",
   "freeInputBox",
-  "freeInputLabel",
+  "freeInputLabelText",
   "freeInput",
   "freeInputBtn",
 ];
 
 const elements = Object.fromEntries(ids.map((id) => [id, new FakeElement(id)]));
-elements.userLanguage.value = "zh";
+elements.uiLanguageSelect.value = "en";
+elements.userLanguage.value = "en";
 elements.simpleBtn.attributes["aria-pressed"] = "true";
 
 const tabs = ["jobs", "skills", "support", "career"].map((name) => {
@@ -138,6 +165,7 @@ const tabs = ["jobs", "skills", "support", "career"].map((name) => {
   return tab;
 });
 
+const documentElement = new FakeElement("html", "html");
 const context = {
   console,
   tabs,
@@ -145,9 +173,11 @@ const context = {
     callback();
   },
   document: {
+    title: "",
+    documentElement,
     body: new FakeElement("body", "body"),
     getElementById(id) {
-      return elements[id] || new FakeElement(id);
+      return elements[id] || null;
     },
     createElement(tag) {
       return new FakeElement("", tag);
@@ -179,41 +209,92 @@ const context = {
 
 const appCode = fs.readFileSync("app.js", "utf8");
 const testCode = `
-async function clickOption(label) {
-  const button = elements.optionGrid.children.find((child) => child.innerHTML.includes(label));
-  if (!button) throw new Error("Missing option: " + label);
+async function clickOption(optionId) {
+  const button = elements.optionGrid.children.find((child) => child.dataset.optionId === optionId);
+  if (!button) throw new Error("Missing option: " + optionId);
   await button.click();
 }
 
 (async () => {
+  if (state.uiLanguage !== "en") throw new Error("English is not the default language");
+  if (!elements.questionTitle.textContent.includes("What help")) {
+    throw new Error("Default question is not English");
+  }
+  if (!elements.recommendations.innerHTML.includes("Remote customer support")) {
+    throw new Error("Default recommendations are not English");
+  }
+
+  elements.uiLanguageSelect.value = "es";
+  await elements.uiLanguageSelect.dispatch("change");
+  if (!elements.questionTitle.textContent.includes("¿Qué ayuda")) {
+    throw new Error("Spanish switch did not update the current question");
+  }
+  if (!elements.recommendations.innerHTML.includes("Soporte al cliente")) {
+    throw new Error("Spanish switch did not update recommendations");
+  }
+
+  elements.uiLanguageSelect.value = "zh";
+  await elements.uiLanguageSelect.dispatch("change");
+  if (!elements.questionTitle.textContent.includes("你现在")) {
+    throw new Error("Chinese switch did not update the current question");
+  }
+  if (!elements.recommendations.innerHTML.includes("远程客服")) {
+    throw new Error("Chinese switch did not update recommendations");
+  }
+
+  elements.uiLanguageSelect.value = "en";
+  await elements.uiLanguageSelect.dispatch("change");
+  elements.userLanguage.value = "es";
+  await elements.userLanguage.dispatch("change");
+  if (state.uiLanguage !== "en" || state.language !== "es") {
+    throw new Error("Preferred language should not change interface language");
+  }
+  if (!elements.questionTitle.textContent.includes("What help")) {
+    throw new Error("Preferred language changed the interface text");
+  }
+
   elements.userName.value = "Alex";
   elements.userLocation.value = "Chicago";
-  elements.userLanguage.value = "bilingual";
   await elements.profileForm.dispatch("submit");
+  if (state.uiLanguage !== "en" || state.language !== "es") {
+    throw new Error("Profile save should keep interface and preferred language separate");
+  }
 
-  await clickOption("我想尽快找工作");
-  await clickOption("越快越好");
-  await clickOption("坐着或远程工作");
-  await clickOption("需要坐着或远程");
-  await clickOption("没有经验");
-  await clickOption("帮我做简历");
-  await clickOption("先找工作");
+  await clickOption("findJob");
+  await clickOption("now");
+  await clickOption("remoteWork");
+  if (elements.optionGrid.children.some((child) => child.dataset.optionId === "sitRemote")) {
+    throw new Error("Repeated sitting/remote option should not appear after remote work was selected");
+  }
+  await clickOption("noExperience");
+  await clickOption("resume");
+  await clickOption("jobsFirst");
 
-  if (!elements.questionTitle.textContent.includes("机会路径已经生成")) {
-    throw new Error("Did not reach done screen");
+  if (!elements.questionTitle.textContent.includes("Your opportunity path is ready")) {
+    throw new Error("Did not reach the done screen");
   }
   if (!state.goals.includes("job")) throw new Error("Job goal missing");
   if (!state.bodyNeeds.includes("sit_or_remote")) throw new Error("Remote body need missing");
   if (!state.supportNeeds.includes("resume")) throw new Error("Resume support missing");
-  if (!elements.todayTasks.innerHTML.includes("申请")) throw new Error("Job task missing");
-  if (!elements.todayTasks.innerHTML.includes("简历")) throw new Error("Resume task missing");
-  if (!elements.recommendations.innerHTML.includes("远程客服") && !elements.recommendations.innerHTML.includes("数据录入")) {
-    throw new Error("Expected remote-friendly job recommendation missing");
+  if (!elements.todayTasks.innerHTML.includes("Apply to or save 2 jobs")) {
+    throw new Error("English job task missing");
+  }
+  if (!elements.todayTasks.innerHTML.includes("one-page resume")) {
+    throw new Error("English resume task missing");
   }
 
   await tabs.find((tab) => tab.dataset.tab === "skills").click();
-  if (!elements.recommendations.innerHTML.includes("基础电脑")) {
-    throw new Error("Expected skill recommendation missing");
+  if (!elements.recommendations.innerHTML.includes("Basic computer")) {
+    throw new Error("Expected English skill recommendation missing");
+  }
+
+  elements.uiLanguageSelect.value = "es";
+  await elements.uiLanguageSelect.dispatch("change");
+  if (!elements.questionTitle.textContent.includes("Tu ruta")) {
+    throw new Error("Done screen did not translate to Spanish");
+  }
+  if (!elements.todayTasks.innerHTML.includes("Postula o guarda")) {
+    throw new Error("Tasks did not translate to Spanish");
   }
 
   await elements.largeTextBtn.click();
@@ -222,13 +303,14 @@ async function clickOption(label) {
   if (!document.body.classList.contains("high-contrast")) throw new Error("Contrast toggle failed");
 
   await elements.copyPlanBtn.click();
-  if (!globalThis.copiedText.includes("向上路行动计划") || !globalThis.copiedText.includes("推荐工作")) {
-    throw new Error("Copied plan is incomplete");
+  if (!globalThis.copiedText.includes("Plan de acción de OpportunityGuide") || !globalThis.copiedText.includes("Trabajos recomendados")) {
+    throw new Error("Copied Spanish plan is incomplete");
   }
 
   globalThis.__result = {
+    currentLanguage: state.uiLanguage,
     title: elements.questionTitle.textContent,
-    tasks: elements.todayTasks.querySelectorAll("li").map((item) => item.textContent),
+    firstTask: elements.todayTasks.querySelectorAll("li")[0].textContent,
     copiedLength: globalThis.copiedText.length,
     activeTab,
   };
