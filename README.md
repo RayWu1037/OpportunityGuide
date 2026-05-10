@@ -13,7 +13,8 @@ An accessible opportunity navigation prototype for low-income, disabled, and low
   - Free skill paths: basic computer use, customer service, auto repair, carpentry safety, caregiving, English, budgeting, credit, and scam prevention.
   - Support resources: 988, FindTreatment.gov, NAMI, Ticket to Work, job centers, and Goodwill.
   - Career guidance: resume help, interview practice, disability accommodation templates, scam checks, and daily job-search tasks.
-- Accessibility controls: large text, high contrast, plain-language mode, and read-current-question.
+- Accessibility controls: large text, high contrast, and read-current-question.
+- Job recommendation links point to role- and location-specific search results when the user provides a city or ZIP code.
 - Action plan generation with copy and print/PDF support.
 
 ## How to Use

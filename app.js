@@ -29,9 +29,6 @@ const text = {
     accessibility: "Accessibility tools",
     largeText: "Large text",
     highContrast: "High contrast",
-    plainLanguage: "Plain language",
-    plainOn: "Plain language is on",
-    plainOff: "Plain language tips are off",
     readQuestion: "Read question",
     profileTitle: "Basic Profile",
     nameLabel: "Name, optional",
@@ -87,9 +84,6 @@ const text = {
     accessibility: "Herramientas de accesibilidad",
     largeText: "Texto grande",
     highContrast: "Alto contraste",
-    plainLanguage: "Lenguaje simple",
-    plainOn: "Lenguaje simple activado",
-    plainOff: "Consejos de lenguaje simple desactivados",
     readQuestion: "Leer pregunta",
     profileTitle: "Perfil básico",
     nameLabel: "Nombre, opcional",
@@ -144,9 +138,6 @@ const text = {
     accessibility: "无障碍工具",
     largeText: "大字体",
     highContrast: "高对比",
-    plainLanguage: "简单语言",
-    plainOn: "已使用简单语言",
-    plainOff: "已关闭简单语言提示",
     readQuestion: "朗读当前问题",
     profileTitle: "基本情况",
     nameLabel: "称呼，可跳过",
@@ -668,51 +659,51 @@ const nodes = {
 };
 
 const jobCatalog = [
-  item(["remote", "sitting", "computer", "training", "low_physical", "entry"], "company", "https://www.careeronestop.org/JobSearch/job-search.aspx", {
-    en: ["Remote customer support or chat support", "Good for users who can use a phone or computer and need seated or remote work. Many roles provide scripts and training.", "Search CareerOneStop for entry-level customer support"],
-    es: ["Soporte al cliente remoto o por chat", "Útil si puedes usar teléfono o computadora y necesitas trabajo sentado o remoto. Muchos puestos dan guiones y capacitación.", "Buscar atención al cliente inicial en CareerOneStop"],
-    zh: ["远程客服或在线聊天客服", "适合能用电脑或手机、需要坐着或远程工作的人。很多岗位提供话术培训。", "用 CareerOneStop 搜 entry-level customer support"],
-  }),
-  item(["remote", "sitting", "computer", "low_physical", "entry"], "company", "https://www.careeronestop.org/JobSearch/job-search.aspx", {
-    en: ["Data entry or document processing", "Good for quiet work, mobility limits, and basic computer users. Watch out for fake job scams.", "Search for data entry jobs"],
-    es: ["Entrada de datos o procesamiento de documentos", "Bueno para trabajo tranquilo, movilidad limitada y computación básica. Cuidado con empleos falsos.", "Buscar trabajos de entrada de datos"],
-    zh: ["数据录入或文档整理", "适合行动受限、喜欢安静任务、基础电脑可用的人。需要注意识别虚假招聘。", "搜索 data entry 入门岗位"],
-  }),
-  item(["onsite", "service", "training", "can_stand", "entry"], "local", "https://www.careeronestop.org/LocalHelp/local-help.aspx", {
-    en: ["Cashier or stock clerk", "Often does not require a degree. Ask whether seated work or schedule adjustments are possible.", "Find a local job center"],
-    es: ["Cajero o repositor", "Normalmente no requiere título. Pregunta si se puede trabajar sentado o ajustar horario.", "Buscar centro laboral local"],
-    zh: ["超市收银员或货架补货员", "不要求高学历，很多店可培训。收银岗位可询问是否能坐着工作或调整班次。", "找附近就业中心"],
-  }),
+  item(["remote", "sitting", "computer", "training", "low_physical", "entry"], "company", "https://www.indeed.com/jobs", {
+    en: ["Remote customer support or chat support", "Good for users who can use a phone or computer and need seated or remote work. Many roles provide scripts and training.", "Open matched customer support jobs"],
+    es: ["Soporte al cliente remoto o por chat", "Útil si puedes usar teléfono o computadora y necesitas trabajo sentado o remoto. Muchos puestos dan guiones y capacitación.", "Abrir trabajos de soporte relacionados"],
+    zh: ["远程客服或在线聊天客服", "适合能用电脑或手机、需要坐着或远程工作的人。很多岗位提供话术培训。", "打开匹配的客服岗位"],
+  }, { provider: "indeed", query: "entry level remote customer support OR chat support" }),
+  item(["remote", "sitting", "computer", "low_physical", "entry"], "company", "https://www.indeed.com/jobs", {
+    en: ["Data entry or document processing", "Good for quiet work, mobility limits, and basic computer users. Watch out for fake job scams.", "Open matched data entry jobs"],
+    es: ["Entrada de datos o procesamiento de documentos", "Bueno para trabajo tranquilo, movilidad limitada y computación básica. Cuidado con empleos falsos.", "Abrir trabajos de entrada de datos"],
+    zh: ["数据录入或文档整理", "适合行动受限、喜欢安静任务、基础电脑可用的人。需要注意识别虚假招聘。", "打开匹配的数据录入岗位"],
+  }, { provider: "indeed", query: "entry level data entry document processing" }),
+  item(["onsite", "service", "training", "can_stand", "entry"], "local", "https://www.indeed.com/jobs", {
+    en: ["Cashier or stock clerk", "Often does not require a degree. Ask whether seated work or schedule adjustments are possible.", "Open matched cashier and stock jobs"],
+    es: ["Cajero o repositor", "Normalmente no requiere título. Pregunta si se puede trabajar sentado o ajustar horario.", "Abrir trabajos de caja y reposición"],
+    zh: ["超市收银员或货架补货员", "不要求高学历，很多店可培训。收银岗位可询问是否能坐着工作或调整班次。", "打开匹配的收银/补货岗位"],
+  }, { provider: "indeed", query: "entry level cashier stock clerk" }),
   item(["onsite", "hands", "fast_income", "physical", "can_stand"], "local", "https://www.goodwill.org/job-training-and-placement-services/", {
     en: ["Cleaner or hotel housekeeper", "Fast to start, but usually physically demanding. Best if standing and walking are okay.", "View Goodwill job training"],
     es: ["Limpieza u hotel housekeeping", "Rápido para empezar, pero suele requerir esfuerzo físico. Mejor si puedes estar de pie.", "Ver capacitación de Goodwill"],
     zh: ["清洁工或酒店客房清洁", "通常入门快，但体力要求较高。适合能站立、走动、希望尽快有收入的人。", "查看 Goodwill 就业训练"],
   }),
-  item(["onsite", "service", "fast_income", "can_stand", "entry"], "local", "https://www.careeronestop.org/LocalHelp/local-help.aspx", {
-    en: ["Restaurant helper, dishwasher, or busser", "Low barrier and quick training. Good for service work and fast income.", "Find local job help"],
-    es: ["Ayudante de restaurante, lavaplatos o auxiliar", "Barrera baja y capacitación rápida. Bueno para servicio e ingresos rápidos.", "Buscar ayuda laboral local"],
-    zh: ["餐厅帮工、洗碗工或端盘助手", "低门槛、培训快。适合能站立、愿意做服务类现场工作的人。", "找本地就业帮助"],
-  }),
-  item(["onsite", "hands", "fast_income", "physical", "can_stand"], "company", "https://www.careeronestop.org/JobSearch/job-search.aspx", {
-    en: ["Warehouse picker, packer, or package handler", "Many openings, but may require lifting and standing. Best if physical work is okay.", "Search warehouse entry-level jobs"],
-    es: ["Almacén: picking, empaque o paquetes", "Hay muchas vacantes, pero puede requerir cargar y estar de pie.", "Buscar trabajos iniciales de almacén"],
-    zh: ["仓库拣货、包装或快递分拣", "入门机会多，但可能需要搬重物和长时间站立。适合体力允许、想快速上岗的人。", "搜索 warehouse entry-level"],
-  }),
-  item(["onsite", "hands", "training", "can_stand", "growth"], "local", "https://www.careeronestop.org/Toolkit/Careers/careers.aspx", {
-    en: ["Auto shop helper", "Good for hands-on learners who can start with tools, cleaning, and basic maintenance tasks.", "Explore auto repair career paths"],
-    es: ["Ayudante en taller mecánico", "Bueno para aprender con las manos empezando con herramientas, limpieza y mantenimiento básico.", "Explorar carreras de mecánica"],
-    zh: ["汽修店助手", "适合喜欢动手、有交通条件、愿意从清洁工具、递工具、基础维护做起的人。", "查看汽修相关职业路径"],
-  }),
-  item(["onsite", "hands", "training", "physical", "growth"], "local", "https://www.careeronestop.org/Toolkit/Training/find-certifications.aspx", {
-    en: ["Carpentry or maintenance helper", "A path toward a trade. Start with safety, measuring, and helper roles.", "Find local certificates and training"],
-    es: ["Ayudante de carpintería o mantenimiento", "Ruta hacia un oficio. Empieza con seguridad, medición y ayudante.", "Buscar certificados y capacitación"],
-    zh: ["木工或维修助手", "适合想学手艺的人。通常从助手做起，体力要求中高，安全培训很重要。", "查找证书和培训"],
-  }),
-  item(["care", "service", "training", "can_stand", "entry"], "company", "https://www.careeronestop.org/JobSearch/job-search.aspx", {
-    en: ["Caregiver, home care, or childcare assistant", "Good for people with care experience. Some roles need background checks or short training.", "Search caregiver entry-level jobs"],
-    es: ["Cuidador, cuidado en casa o asistente infantil", "Bueno si tienes experiencia cuidando. Algunos requieren verificación o capacitación corta.", "Buscar trabajos iniciales de cuidado"],
-    zh: ["陪护、家政或托儿助理", "适合有照顾经验、喜欢帮助别人、能沟通的人。部分岗位需要背景检查或短培训。", "搜索 caregiver entry-level"],
-  }),
+  item(["onsite", "service", "fast_income", "can_stand", "entry"], "local", "https://www.indeed.com/jobs", {
+    en: ["Restaurant helper, dishwasher, or busser", "Low barrier and quick training. Good for service work and fast income.", "Open matched restaurant helper jobs"],
+    es: ["Ayudante de restaurante, lavaplatos o auxiliar", "Barrera baja y capacitación rápida. Bueno para servicio e ingresos rápidos.", "Abrir trabajos de restaurante relacionados"],
+    zh: ["餐厅帮工、洗碗工或端盘助手", "低门槛、培训快。适合能站立、愿意做服务类现场工作的人。", "打开匹配的餐饮岗位"],
+  }, { provider: "indeed", query: "entry level restaurant helper dishwasher busser" }),
+  item(["onsite", "hands", "fast_income", "physical", "can_stand"], "company", "https://www.indeed.com/jobs", {
+    en: ["Warehouse picker, packer, or package handler", "Many openings, but may require lifting and standing. Best if physical work is okay.", "Open matched warehouse jobs"],
+    es: ["Almacén: picking, empaque o paquetes", "Hay muchas vacantes, pero puede requerir cargar y estar de pie.", "Abrir trabajos de almacén relacionados"],
+    zh: ["仓库拣货、包装或快递分拣", "入门机会多，但可能需要搬重物和长时间站立。适合体力允许、想快速上岗的人。", "打开匹配的仓库岗位"],
+  }, { provider: "indeed", query: "entry level warehouse picker packer package handler" }),
+  item(["onsite", "hands", "training", "can_stand", "growth"], "local", "https://www.indeed.com/jobs", {
+    en: ["Auto shop helper", "Good for hands-on learners who can start with tools, cleaning, and basic maintenance tasks.", "Open matched auto shop helper jobs"],
+    es: ["Ayudante en taller mecánico", "Bueno para aprender con las manos empezando con herramientas, limpieza y mantenimiento básico.", "Abrir trabajos de ayudante mecánico"],
+    zh: ["汽修店助手", "适合喜欢动手、有交通条件、愿意从清洁工具、递工具、基础维护做起的人。", "打开匹配的汽修助手岗位"],
+  }, { provider: "indeed", query: "entry level auto shop helper automotive assistant" }),
+  item(["onsite", "hands", "training", "physical", "growth"], "local", "https://www.indeed.com/jobs", {
+    en: ["Carpentry or maintenance helper", "A path toward a trade. Start with safety, measuring, and helper roles.", "Open matched carpentry or maintenance jobs"],
+    es: ["Ayudante de carpintería o mantenimiento", "Ruta hacia un oficio. Empieza con seguridad, medición y ayudante.", "Abrir trabajos de carpintería o mantenimiento"],
+    zh: ["木工或维修助手", "适合想学手艺的人。通常从助手做起，体力要求中高，安全培训很重要。", "打开匹配的木工/维修岗位"],
+  }, { provider: "indeed", query: "entry level carpenter helper maintenance helper" }),
+  item(["care", "service", "training", "can_stand", "entry"], "company", "https://www.indeed.com/jobs", {
+    en: ["Caregiver, home care, or childcare assistant", "Good for people with care experience. Some roles need background checks or short training.", "Open matched care jobs"],
+    es: ["Cuidador, cuidado en casa o asistente infantil", "Bueno si tienes experiencia cuidando. Algunos requieren verificación o capacitación corta.", "Abrir trabajos de cuidado relacionados"],
+    zh: ["陪护、家政或托儿助理", "适合有照顾经验、喜欢帮助别人、能沟通的人。部分岗位需要背景检查或短培训。", "打开匹配的照护岗位"],
+  }, { provider: "indeed", query: "entry level caregiver home care childcare assistant" }),
   item(["disability_accommodation", "low_physical", "support", "training"], "local", "https://choosework.ssa.gov/", {
     en: ["Disability-friendly employment support", "For users who need accommodations, flexible work, or support around disability benefits.", "View Ticket to Work"],
     es: ["Apoyo laboral para discapacidad", "Para quienes necesitan adaptaciones, flexibilidad o apoyo con beneficios.", "Ver Ticket to Work"],
@@ -817,11 +808,11 @@ const careerCatalog = [
     es: ["Lista contra trabajos falsos", "Ten cuidado si piden pagar, comprar equipo o dar información sensible.", "Ver guía de estafas"],
     zh: ["防虚假招聘检查清单", "任何要求先交钱、购买设备、提供敏感信息的工作都要谨慎。", "查看 Consumer.gov 防诈骗"],
   }),
-  item(["job", "fast_income", "balanced"], "", "https://www.careeronestop.org/JobSearch/job-search.aspx", {
+  item(["job", "fast_income", "balanced"], "", "https://www.indeed.com/jobs", {
     en: ["Daily job search task", "Apply to 2 jobs, practice 1 answer, and record 1 follow-up each day.", "Start searching jobs"],
     es: ["Tarea diaria de búsqueda", "Postula a 2 trabajos, practica 1 respuesta y registra 1 seguimiento.", "Empezar búsqueda de trabajo"],
     zh: ["每日求职小任务", "每天只做三件事：申请 2 个岗位、练 1 个回答、记录 1 个反馈。", "开始找工作"],
-  }),
+  }, { provider: "indeed", query: "entry level jobs" }),
 ];
 
 const sourceLabels = {
@@ -862,8 +853,8 @@ function opt(id, next, effects, copy, isUnsure = false) {
   return { id, next, effects, copy, isUnsure };
 }
 
-function item(tags, source, link, copy) {
-  return { tags, source, link, copy };
+function item(tags, source, link, copy, precise = {}) {
+  return { tags, source, link, copy, precise };
 }
 
 function currentText() {
@@ -902,7 +893,6 @@ const elements = {
   printBtn: document.getElementById("printBtn"),
   largeTextBtn: document.getElementById("largeTextBtn"),
   contrastBtn: document.getElementById("contrastBtn"),
-  simpleBtn: document.getElementById("simpleBtn"),
   readBtn: document.getElementById("readBtn"),
 };
 
@@ -988,7 +978,6 @@ function renderStaticText() {
   document.getElementById("accessibilityPanel")?.setAttribute("aria-label", t.accessibility);
   setText("largeTextBtn", t.largeText);
   setText("contrastBtn", t.highContrast);
-  setText("simpleBtn", t.plainLanguage);
   setText("readBtn", t.readQuestion);
   setText("profileTitle", t.profileTitle);
   setText("nameLabelText", t.nameLabel);
@@ -1146,6 +1135,16 @@ function entryLinkLabel(entry) {
   return localize({ en: entry.copy.en[2], es: entry.copy.es[2], zh: entry.copy.zh[2] });
 }
 
+function entryLink(entry) {
+  if (entry.precise?.provider === "indeed") {
+    const location = state.location.trim() || "United States";
+    const query = entry.precise.query;
+    return `https://www.indeed.com/jobs?q=${encodeURIComponent(query)}&l=${encodeURIComponent(location)}`;
+  }
+
+  return entry.link;
+}
+
 function reasonFor(entry) {
   const reasons = [];
   if (entry.tags.includes("low_physical") && state.bodyNeeds.includes("low_physical")) {
@@ -1268,7 +1267,7 @@ function renderCard(entry) {
       </div>
       <h3>${entryTitle(entry)}</h3>
       <p>${entryDescription(entry)}</p>
-      <a class="resource-link" href="${entry.link}" target="_blank" rel="noreferrer">${entryLinkLabel(entry)}</a>
+      <a class="resource-link" href="${entryLink(entry)}" target="_blank" rel="noreferrer">${entryLinkLabel(entry)}</a>
     </article>
   `;
 }
@@ -1276,7 +1275,7 @@ function renderCard(entry) {
 function planText() {
   const t = currentText();
   const tasks = Array.from(elements.todayTasks.querySelectorAll("li")).map((entry) => entry.textContent.trim());
-  const jobs = pickTop(jobCatalog, 3).map((entry) => `- ${entryTitle(entry)}: ${reasonFor(entry)}`);
+  const jobs = pickTop(jobCatalog, 3).map((entry) => `- ${entryTitle(entry)}: ${reasonFor(entry)}\n  ${entryLink(entry)}`);
   const skills = pickTop(skillCatalog, 2).map((entry) => `- ${entryTitle(entry)}: ${entry.link}`);
   const support = pickTop(supportCatalog, 2).map((entry) => `- ${entryTitle(entry)}: ${entry.link}`);
 
@@ -1390,12 +1389,6 @@ elements.largeTextBtn.addEventListener("click", () => {
 elements.contrastBtn.addEventListener("click", () => {
   const enabled = document.body.classList.toggle("high-contrast");
   elements.contrastBtn.setAttribute("aria-pressed", String(enabled));
-});
-
-elements.simpleBtn.addEventListener("click", () => {
-  const enabled = elements.simpleBtn.getAttribute("aria-pressed") !== "true";
-  elements.simpleBtn.setAttribute("aria-pressed", String(enabled));
-  showToast(enabled ? currentText().plainOn : currentText().plainOff);
 });
 
 elements.readBtn.addEventListener("click", () => {

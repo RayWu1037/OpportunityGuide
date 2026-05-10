@@ -120,7 +120,6 @@ const ids = [
   "userLanguage",
   "largeTextBtn",
   "contrastBtn",
-  "simpleBtn",
   "readBtn",
   "profileTitle",
   "nameLabelText",
@@ -156,7 +155,6 @@ const ids = [
 const elements = Object.fromEntries(ids.map((id) => [id, new FakeElement(id)]));
 elements.uiLanguageSelect.value = "en";
 elements.userLanguage.value = "en";
-elements.simpleBtn.attributes["aria-pressed"] = "true";
 
 const tabs = ["jobs", "skills", "support", "career"].map((name) => {
   const tab = new FakeElement("", "button");
@@ -286,6 +284,14 @@ async function clickOption(optionId) {
   await tabs.find((tab) => tab.dataset.tab === "skills").click();
   if (!elements.recommendations.innerHTML.includes("Basic computer")) {
     throw new Error("Expected English skill recommendation missing");
+  }
+
+  await tabs.find((tab) => tab.dataset.tab === "jobs").click();
+  if (!elements.recommendations.innerHTML.includes("l=Chicago")) {
+    throw new Error("Job recommendations should include the user's location in precise links");
+  }
+  if (!elements.recommendations.innerHTML.includes("entry%20level%20remote%20customer%20support")) {
+    throw new Error("Job recommendations should include precise role search terms");
   }
 
   elements.uiLanguageSelect.value = "es";
